@@ -1,0 +1,18 @@
+public class Solution {
+    public static int searchInsert(int [] arr, int m){
+        // using Lower Bound and binary Search 
+        int i = 0 , j = arr.length - 1 ;
+        int position = arr.length ;
+        while(i <= j){
+            int mid = i + (j - i)/2 ;
+            if(arr[mid] >= m){   // where we get that element there simple we insert 
+                position = mid ;
+                j = mid - 1 ;
+            }
+            else i = mid + 1 ;
+        }
+        return position ;
+         // time complexity :  O(log2n) binary Search ;
+         
+    }
+}
