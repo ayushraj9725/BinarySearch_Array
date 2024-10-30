@@ -22,6 +22,8 @@ If 'arr' = [12, 15, 18, 2, 4] and 'k' = 2, then the position at which 'k' is pre
 
 problem link : https://www.naukri.com/code360/problems/search-in-rotated-sorted-array_1082554?leftPanelTabValue=PROBLEM
 problem link : https://leetcode.com/problems/search-in-rotated-sorted-array/?envType=problem-list-v2&envId=array
+
+asked in company : Google , amazone , facebook , adobe , phone pay ,paytm , tcs, oyo ,spinny etc
 */
 import java.util.ArrayList;
 public class Solution {
