@@ -1,0 +1,104 @@
+/*
+PROBLEM STATEMENT : LEETCODE 81 
+You are given a rotated sorted array 'a' of length 'n' and a 'key'. You need to determine if the 'key' exists in the array 'a'.
+The given sorted array is rotated from an unknown index 'x'. Such that after rotation the array became [a[x], a[x+1]...., a[n-1], a[1]..., a[x-1]], 
+(0-based indexing). For example, if the array is [1, 2, 3, 4, 5] and x = 2 then the rotated array will be [3, 4, 5, 1, 2, 3].
+
+Return True if the 'key' is found in 'a'. Otherwise, return False.
+
+Note: Array ‘a’ may contain duplicate elements.
+
+Example 1:
+Input: a = [6, 10, 1, 3, 5], key = 3
+Output: True
+Explanation: The array 'a' contains the 'key' = 3, so we return True.
+
+Example 2:
+Input: nums = [2,5,6,0,0,1,2], target = 0
+Output: true
+
+Example 3:
+Input: nums = [2,5,6,0,0,1,2], target = 3
+Output: false
+ 
+Constraints:
+1 <= nums.length <= 5000
+-104 <= nums[i] <= 104
+nums is guaranteed to be rotated at some pivot.
+-104 <= target <= 104
+
+problem Link : https://www.naukri.com/code360/problems/search-in-a-rotated-sorted-array-ii_7449547?leftPanelTabValue=PROBLEM
+             : https://leetcode.com/problems/search-in-rotated-sorted-array-ii/description/?envType=problem-list-v2&envId=array
+Asked In Company : Facebook , amazone etc 
+*/
+
+class Solution {
+    public boolean search(int[] nums, int target) {
+        int n = nums.length ;
+        int low = 0 , high = n - 1 ;
+        while(low <= high){
+            int mid = low + (high - low) / 2 ;
+            if(nums[mid] == target) return true ;
+            while(low < mid && nums[low] == nums[mid] && nums[mid] == nums[high]){
+                // we are triming here from both side 
+                low++ ;
+                high-- ;
+                
+            }
+            if(nums[low] <= nums[mid]){ // identify the sorted and then try to remove one part
+                  if(nums[low] <= target && target <= nums[mid]) high = mid - 1 ; // remove right
+                  else low = mid + 1 ;   // remove left 
+            }
+            else{ // here identified right is sorted so removed one part to see
+                  if(nums[mid] <= target && target <= nums[high]) low = mid + 1 ; // remove left
+                  else high = mid - 1 ;
+            }
+        }
+        return false ; // otherwise return false at last if the element not found 
+
+    }
+}
+
+
+// 2nd Way to do this 
+
+public class Solution {
+    public static boolean searchInARotatedSortedArrayII(int []A, int key) {
+        // Optimal Approach : Binary Search 
+       int n = A.length;
+       int i = 0 , j = n - 1 ;
+       while(i <= j){
+           int mid = (i + j) / 2 ;
+           if(A[mid] == key) return true ;
+           if(A[i] == A[mid] && A[mid] == A[j]){
+               i = i + 1 ;
+               j = j - 1 ;
+               continue ;
+           }
+           if(A[i] <= A[mid]){ // left is sorted , try to eliminate some part
+               if(A[i] <= key && key <= A[mid]){
+                   j = mid - 1 ; // right removed 
+               }
+               else i = mid + 1 ; // left removed 
+           }
+           else{
+               if(A[mid] <= key && key <= A[j]){
+                   i = mid + 1 ; // left removed 
+               }
+               else j = mid - 1 ; // right removed 
+           }
+       }
+        return false ;
+       // time used to perform this : O(log2n) 
+
+
+      /*  // Brute Force 
+        for(int i = 0 ; i < A.length - 1 ;i++){
+            if(A[i] == key) return true ;
+        }
+
+        return false ;   // O(N) time complexity 
+       */
+
+    }
+}
