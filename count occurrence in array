@@ -12,6 +12,9 @@ Output: 2
 
 Explanation: Total occurrences of '3' in the array 'arr' is 2.
 
+problem link : https://www.naukri.com/code360/problems/occurrence-of-x-in-a-sorted-array_630456?leftPanelTabValue=PROBLEM
+asked in company : amazone , mahindra , amdocs etc 
+
 */
 public class Solution {
     public static int first(int a[] , int n , int x){
