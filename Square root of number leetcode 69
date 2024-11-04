@@ -1,0 +1,124 @@
+/***************  
+Leetcode : 69 Sqrt(X) 
+
+Problem statement : Given a non-negative integer x, return the square root of x rounded down to the nearest integer. The returned integer should be non-negative as well.
+You must not use any built-in exponent function or operator.
+
+For example, do not use pow(x, 0.5) in c++ or x ** 0.5 in python.
+ 
+Example 1:
+Input: x = 4
+Output: 2
+Explanation: The square root of 4 is 2, so we return 2.
+
+Example 2:
+Input: x = 8
+Output: 2
+Explanation: The square root of 8 is 2.82842..., and since we round it down to the nearest integer, 2 is returned.
+
+problem links : https://leetcode.com/problems/sqrtx/description/?envType=problem-list-v2&envId=math
+              : https://www.naukri.com/code360/problems/square-root-integral_893351?leftPanelTab=0%3Futm_source%3Dyoutube&leftPanelTabValue=SUBMISSION
+Asked in interview company : Samsung , amazon ,microsoft , Google ,TCS etc
+
+****************/
+
+/***************
+leetcode solution :
+class Solution {
+    public int mySqrt(int x) {
+        int i = 1 ;
+        int j = x ;
+        int n = 0 ; // result stored 
+        while( i <= j){
+            int mid = i + (j - i)/2 ;
+           //  if(mid * mid <= x){  //here chance to int overflow so
+           if(mid <= x/mid ) {
+                n = mid ;
+                i = mid + 1 ;
+            }
+            else{
+                j = mid - 1 ;
+            }
+
+        }
+        return n ;
+
+
+
+    /*    int i = 1 ;
+        long sq = i*i ;
+        while(x >= sq){
+            i++;
+            sq = i*i ;
+        }
+        return (int)(i - 1) ; 
+      */
+
+     /*   if(x == 0) return 0 ;
+        int ans = 1 ;
+        for(int i = 1 ; i < x ; i++){
+            if(i * i <= x) { // here use i <= x/i for saving int overflow
+                ans = i ;
+            }
+            else break ;
+        }
+        return ans ;
+         */
+    }
+}
+
+*****************/
+
+/****************
+
+Codeninja Solution 
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+
+	public static int sqrtN(long N) {
+
+        if(N < 2) return (int)N ;
+		
+         int low = 1 ;
+		 int high = (int)N ;
+		 int ans = 1 ;
+		 while(low <= high){
+			 int mid = (low + (high - low) / 2) ;
+			 if(mid <= (N/mid)){ // not use (mid * mid) here chance to int overflow
+				// ans = Math.max(mid,ans);
+				 ans = mid ;
+				 low = mid + 1; // left eliminating bcz check for maximum
+			 } 
+			 else high = mid - 1 ; // right part eliminated 
+		 }
+
+      return ans ; // we can return here also high ,bcz high holds alway
+	            // at the end of binary search and that number defenately maximum
+
+
+
+
+
+
+
+	/*	// brute force to use Math.sqrt(N);
+		// 2nd way : linearly check for numbers from 1
+		 int ans = 1 ; 
+		for(int i = 1 ; i <= N ;i++){
+			if(i <= N/i){  // here cance to int overflow so use this instead of (i * i <= nN)
+                 ans = i ;
+			}
+			else break ;
+		}
+		return ans ;
+
+		// time complexity : Near about O(N) .
+		// because of this will checking unnecessary 
+		 */
+	}
+}
+
+****************/
