@@ -1,0 +1,85 @@
+/**************
+Problem : Find the smallest divisor given    ,   Link : https://www.naukri.com/code360/problems/smallest-divisor-with-the-given-limit_1755882  CodeNinja
+                                          1283   Link : https://leetcode.com/problems/find-the-smallest-divisor-given-a-threshold/?envType=problem-list-v2&envId=array       Leetcode    , asked in interview : salesforce , vymo etc 
+
+PROBLEM STATEMENT : You are given an array of integers 'arr' and an integer 'limit'.
+Your task is to find the smallest positive integer divisor, such that upon dividing all the elements of the given array by it, 
+the sum of the division's result is less than or equal to the given integer's limit.
+
+Note:
+Each result of the division is rounded to the nearest integer greater than or equal to that element. For Example, 7/3 = 3.
+
+eg : you have an array of element -> arr[] = [1 , 2 ,5,9] ans threshold/limit = 6 ;
+you have to return the divisor minimest which follow the limit or threshold , what we are gonna do for every divisor , check the ceil of sum of element divided by divisor .like that
+so for divisor we always start from 1 and divide each element of arry with 1 ans get the sum of all .
+d = 1 -> [1/1 , 2/1 , 5/1 , 9/1 ] => give its ceil ans sum 1 + 2 + 5 + 9 = 17 <= 6 false no follow the limit , so we have to check fro other divisor ,
+suppoose d go at d = 4 , then [1/4 , 2/4 , 5/4 , 9/4 ] => it also give ceil sum 1 + 1 + 2 + 3 = 7 <= 6 not follow again so move ahead 
+now d = 5 [1/5 , 2/5 , 5/5 , 9/5 ] not it's ceil sum 1 + 1 + 1 + 2 = 5 <= 6 it is following so this is our answer .
+but here d = 6 , 7 , 8 ..... so on till what , what is the last bound till where we have to go , so between that and after 5 means 6 all should be answer but we are looking for the minimest so 5 is final answer 
+
+suppose we divide the largest value that is divsor greater with all of that existing element [1/100 , 2/100 , 5/100 , 9/100] that always give ceil sum 1 + 1 + 1 + 1 = 4 equal to the size 
+so we are focus on this what is the max element of array so by dividing that we will get that 4 always ceil sum [1/9 , 2/9 , 5/9 , 9/9 ] -> it is giving 1 + 1 + 1 + 1 = 4 
+so the last bound till where we have to go that is the max element of the array ;
+
+let's discussed the solution first is that Brute ;
+
+***************/
+/**********
+
+Brute Force Approach : 
+public static int Maxi(int arr[]){
+          int max = Integer.MIN_VALUE ;
+          for(int i = 0 ; i < arr.length ; i++){
+              max = Math.max(max,arr[i]) ;
+          }
+          return max ; 
+    }
+    public static int smallestDivisor(int arr[], int limit) {
+        // Brute force approach 
+          int max_d = Maxi(arr) ;
+        for(int d = 1 ; d <= max_d ; d++){
+            int sum_of_div = 0 ;
+            for(int i = 0 ; i < arr.length ;i++){
+                sum_of_div += Math.ceil((double)arr[i] / (double)(d)) ;
+            }
+            if(sum_of_div <= limit){
+                return d ;
+            }
+        }  // time complexity : O(max(arr) * N) ;
+        return 0;
+    }
+
+**********/
+
+/********
+Optimal Approach : Binary Search Technique 
+
+ public static int Maxi(int arr[]){
+          int max = Integer.MIN_VALUE ;
+          for(int i = 0 ; i < arr.length ; i++){
+              max = Math.max(max,arr[i]) ;
+          }
+          return max ; 
+    }
+    public static int smallestDivisor(int arr[], int limit) {
+           // Optimal Solution : Binary Search used 
+           int low = 1 , high = Maxi(arr);
+           int ans = 0 ;
+           while( low <= high){
+               int mid = (low + (high - low) / 2);
+               int sum_of_div = 0 ;
+               for(int i = 0 ; i < arr.length ;i++){
+                   sum_of_div += Math.ceil((double)(arr[i]) / (double)(mid)) ; 
+                   // here mid is our divisor and we are dividing each element by this and calculate sum and then checking 
+               }
+               if(sum_of_div <= limit){
+                   ans = mid ;
+                   high = mid - 1 ; // we are looking for smallest so we have to trim right if we found any diviser follow the limit 
+
+               }else low = mid + 1 ; // other wise we are triming left if found sum is greater than limit or threshold
+           }
+           return ans ; // time complexity : O(log2(max(arr)) * N)
+
+
+
+********/
