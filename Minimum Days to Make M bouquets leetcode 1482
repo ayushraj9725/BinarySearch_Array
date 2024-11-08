@@ -1,0 +1,183 @@
+/***********
+PROBLEM : Minimum Days to Make M bouquets leetcode 1482    ; link : https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/
+                                                  codeninja  link : https://www.naukri.com/code360/problems/rose-garden_2248080      ->      Asked in google 
+
+Problem Statement : You are given an integer array bloomDay, an integer m and an integer k.
+You want to make m bouquets. To make a bouquet, you need to use k adjacent flowers from the garden.
+The garden consists of n flowers, the ith flower will bloom in the bloomDay[i] and then can be used in exactly one bouquet.
+Return the minimum number of days you need to wait to be able to make m bouquets from the garden. If it is impossible to make m bouquets return -1.
+
+Example 1:
+Input: bloomDay = [1,10,3,10,2], m = 3, k = 1
+Output: 3
+
+Explanation: Let us see what happened in the first three days. x means flower bloomed and _ means flower did not bloom in the garden.
+We need 3 bouquets each should contain 1 flower.
+After day 1: [x, _, _, _, _]   // we can only make one bouquet.
+After day 2: [x, _, _, _, x]   // we can only make two bouquets.
+After day 3: [x, _, x, _, x]   // we can make 3 bouquets. The answer is 3.
+
+Example 2:
+Input: bloomDay = [1,10,3,10,2], m = 3, k = 2
+Output: -1
+Explanation: We need 3 bouquets each has 2 flowers, that means we need 6 flowers. We only have 5 flowers so it is impossible to get the needed bouquets and we return -1.
+
+we have bloomDay and garden of flowers , we know that ith flower bloom flower at bloomDay[i] , it means 1 flower bloomed 1 day and 10 flower blooming in 10 day ans so on.
+i have an expaple [7 ,7,7,7,13,11,12,7 ]  , and m = 2 , k = 3 ;
+lets check for that , what we have to do here return the minimum number of day where we get the bouquet as condition adjecnt flower . like [_ _ _ ] and [ _ _ _ ] two bouquets when we get at which day that that we have to return .
+
+if we are taking max day in array that day one thing for sure , there has everything bloomed and definately we will get an answer , but problem is we have to select the minimum days .
+day = 13 , this time [+ + + + + + + + ] , this + shown bloomed the flowers - show not bloomed here all bloomed so 13 day can be my answer . because we pick up simply adjacent flowers and filled into bouquet .
+day = 7 , this time [ + + + + - - - + ] this time adjacent flower shown + consicutive bloomed so we can filled ,and get bouquet 1 only and for next we can not get .
+so if we defined the range of min and max of day for bloom flower in array , at min day we will get the minimum bloomed and at max day all get blooming . 
+
+BRUTE FORCE APPROCAH AND SOLUTION : this statement 
+
+so one thing definately we can say , loop we run from min of array to max of array .
+not we are looking for this if(day >= ar[i]) we are couniting the day here for adjacent flower so that we can filled up them in to bouquets . so cnt++ 
+else we do the operation like that (cnt/k) and store it into bouquet and cnt will be 0 this time .
+at the end of the day we check what cnt/k if giving some result 1 or greater then update the bouquet .
+
+now in other function where we are iterating for day one by one from min to max of array .
+here check if possible that what we check above , it is true then return the day .
+else at the end of the things if not get any answer in day simple return -1 ;
+also if where we see the m*k is greater than size of array it means here can make bouquet like filled up with bloomed flowers 
+so that time we will return -1    
+Here time complexity taken : O((Max(arr) - Min(arr)) * N ) , where we can find the max and min other + O(N) iteration 
+
+
+Optimal Approch : Using Binary Search we can reduce the complexity by triming down the left and right posrtion by increment and decrement the low and high pointers here .
+and easly get the answer 
+here time compelxity : O(log2(Max(arr) - Min(arr)) * N ) here the Optimaed Time complexity 
+
+code : Brute force 
+
+ public static int Min(int[] arr){
+        int min = Integer.MAX_VALUE ;
+        for(int i = 0 ;i < arr.length ;i++){
+            min = Math.min(min,arr[i]);
+        }
+        return min ;
+    }
+    public static int Max(int[] arr){
+        int max = Integer.MIN_VALUE ;
+        for(int i = 0 ;i < arr.length ;i++){
+            max = Math.max(max,arr[i]);
+        }
+        return max ;
+    }
+    public static boolean isPossibleBouquet(int[] arr, int day , int r , int b){
+        int cnt = 0 , bouquet = 0 ;
+        for(int i = 0 ; i < arr.length ;i++){
+            if(day >= arr[i]) cnt++ ;
+            else{
+                bouquet += cnt / r ; // here we are cheking for the bouquet and adjacent flower criteria using counting the consicutive adjacent flower which are bloomed 
+                cnt = 0 ; //and now agiain counting from initial for new bouquet 
+            }
+        }
+        // this is again check is cnt has something yes then divide and filled into bouquet 
+        bouquet += cnt / r  ;
+        if(bouquet >= b) return true ;
+        return false ;
+    }
+    public static int roseGarden(int[] arr, int r, int b) {
+        // Brute force approach 
+        int low = Min(arr) , high = Max(arr) ; // the range of the day where we could see the minimum and maximum flowers bloomed
+        for(int i = low ; i <= high ; i++){
+            if(isPossibleBouquet(arr,i, r, b)) return i ; // ith day return if they follow that 
+        } 
+        return -1 ;
+    }
+
+************/
+
+/************
+OPTIMAL APPROACH : USING BINARY SEARCH -> code :
+public static int Min(int[] arr){
+        int min = Integer.MAX_VALUE ;
+        for(int i = 0 ;i < arr.length ;i++){
+            min = Math.min(min,arr[i]);
+        }
+        return min ;
+    }
+    public static int Max(int[] arr){
+        int max = Integer.MIN_VALUE ;
+        for(int i = 0 ;i < arr.length ;i++){
+            max = Math.max(max,arr[i]);
+        }
+        return max ;
+    }
+    public static boolean isPossibleBouquet(int[] arr, int day , int r , int b){
+        int cnt = 0 , bouquet = 0 ;
+        for(int i = 0 ; i < arr.length ;i++){
+            if(day >= arr[i]) cnt++ ;
+            else{
+                bouquet += cnt / r ; // here we are cheking for the bouquet and adjacent flower criteria using counting the consicutive adjacent flower which are bloomed 
+                cnt = 0 ; //and now agiain counting from initial for new bouquet 
+            }
+        }
+        // this is again check is cnt has something yes then divide and filled into bouquet 
+        bouquet += cnt / r  ;
+        if(bouquet >= b) return true ;
+        return false ;
+    }
+    public static int roseGarden(int[] arr, int r, int b) {
+      // Binary search approach 
+       int ans = 0 ;
+       int low = Min(arr) , high = Max(arr) ; 
+
+        if(r * b > arr.length) return -1 ; // this is impossible case to arrangeing flower into bouquet 
+        while(low <= high){
+             int mid = (low + (high - low) / 2);
+             if(isPossibleBouquet(arr,mid, r, b)){
+                 ans = mid ;
+                 high = mid - 1 ; // we are looking for minimum so right we hav to trim 
+             }else low = mid + 1 ; // no not possible so we are triming down here left portion
+        }
+         return ans ; // here we can return the low bcz of opposite polarity or at thr end of the binary search
+
+
+
+
+2nd way 
+
+
+class Solution {
+    public static boolean Possible(int arr[] ,int day , int m , int k){
+        int cnt = 0 , bouquet = 0 ;
+        for(int i = 0 ;i < arr.length ; i++){
+            if(day >= arr[i]) cnt++ ;
+            else{
+                bouquet += cnt/k ;
+                cnt = 0 ;
+            }
+        }
+         bouquet += cnt/k ;
+         return bouquet >= m ;
+    }
+    public int minDays(int[] bloomDay, int m, int k) {
+        int low = Integer.MAX_VALUE , high = Integer.MIN_VALUE ;
+         long val = (long) m * k;
+        if(val > bloomDay.length) return -1 ; // not possible to make bouquet of flowers 
+        for(int i = 0 ; i < bloomDay.length ; i++){
+               low = Math.min(low,bloomDay[i]);
+               high = Math.max(high,bloomDay[i]);
+        }
+        // Binary search applied to get answer 
+        while(low <= high){
+            int mid = (low + high) / 2 ;
+            if(Possible(bloomDay,mid,m,k)){
+                high = mid - 1 ;
+            }
+            else low = mid + 1 ;
+        }
+        return low ; // at the end of binary search it will low point at opposite polarity 
+        // time complexity : O(log2(max-min) * N)
+    }
+}
+
+
+
+
+
+************/
