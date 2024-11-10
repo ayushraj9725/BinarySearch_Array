@@ -1,0 +1,132 @@
+/**********
+Problem Link : https://www.naukri.com/code360/problems/capacity-to-ship-packages-within-d-days_1229379?leftPanelTabValue=SUBMISSION   code ninja , asked in google , amazon , flipkart etc
+          leetcode : https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/description/  1011 problem number .
+
+Problem Statement :
+A conveyor belt has packages that must be shipped from one port to another within days days.
+The ith package on the conveyor belt has a weight of weights[i]. Each day, we load the ship with packages on the conveyor belt (in the order given by weights). We may not load more weight than the maximum weight capacity of the ship.
+Return the least weight capacity of the ship that will result in all the packages on the conveyor belt being shipped within days days.
+Example 1:
+Input: weights = [1,2,3,4,5,6,7,8,9,10], days = 5
+Output: 15
+Explanation: A ship capacity of 15 is the minimum to ship all the packages in 5 days like this:
+1st day: 1, 2, 3, 4, 5
+2nd day: 6, 7
+3rd day: 8
+4th day: 9
+5th day: 10
+
+***********/
+Brute Force Approach
+In the brute-force approach, we iterate through all possible capacities between the minimum required capacity (the heaviest weight) and the maximum possible capacity (the sum of all weights).
+For each capacity, we check if it's feasible to ship all items within the given d days.
+
+Steps:
+Define Capacity Range:
+
+The minimum capacity (low) should be the maximum weight in the array weights[], as each item needs to be carried individually at least.
+The maximum capacity (high) is the sum of all weights, meaning the transporter can carry everything in one go if needed.
+Check Each Capacity:
+
+Start from low and iterate up to high.
+For each capacity i in this range, calculate the number of days needed to ship all weights with that capacity using the PossibleCap function.
+Validate Feasibility:
+
+For each capacity i, if the number of days required (dayReq) to carry all weights is less than or equal to d, then i is a feasible capacity.
+Return the first feasible capacity found, as it represents the smallest capacity that can ship all weights within d days.
+
+  code : 
+   public static int PossibleCap(int w[] ,int cap){
+        int day = 1 , load = 0 ;
+        for(int i = 0 ; i < w.length ;i++){
+            if(load + w[i] > cap){ // checking if capacity exceeding on particular cap so update the day and load
+                day = day + 1 ;
+                load = w[i];
+            }else load = load + w[i] ; // adding and update the load capacity 
+        }
+        return day ;
+    }
+    public static int leastWeightCapacity(int[] weights, int d) {
+       
+        int n = weights.length  ;
+        int low = Integer.MIN_VALUE , high = 0 ;
+        for(int i = 0 ; i < n ;i++){
+            low = Math.max(low,weights[i]); // finding 1st weight cap at minimum so that every thing able to loaded 
+            high = high + weights[i]; // finding last bound that is sum of arra
+        }
+ // now we are iterating all value between max and summation of arry and looking for least capacity
+        for(int i = low ; i <= high ; i++){
+            int dayReq = PossibleCap(weights,i) ; // i is showing capacity 
+            if(dayReq <= d) {
+                return i ;
+            }
+        }
+        return -1 ; // time complexity : O((sum-max)+1 * N )
+
+***********/ 
+Optimal Solution : 
+Identify the Capacity Bounds:
+
+1. The minimum possible capacity (low) should be at least the heaviest weight in the weights[] array, as this ensures the transporter can handle every individual weight.
+2. The maximum possible capacity (high) is the sum of all weights, as this would mean carrying all weights in one day.
+Binary Search for Optimal Capacity:
+
+3. Use binary search to find the smallest capacity between low and high that meets the requirement of transporting all items within d days.
+For each midpoint capacity (mid), calculate the number of days needed with that capacity using the PossibleCap helper function.
+Calculate Days Needed for a Given Capacity (PossibleCap function):
+
+Initialize the number of days to 1 and load to 0.
+For each weight in weights[]:
+If adding the current weight to load exceeds mid (the current capacity), increment the days count and reset load to the current weight.
+Otherwise, add the current weight to load.
+The function returns the number of days required to transport all items with the given capacity.
+Adjust Binary Search Range:
+
+If the number of days required (dayReq) is less than or equal to d, then mid is a possible answer. Set ans to mid, and reduce the search space by setting high = mid - 1 to find a potentially smaller valid capacity.
+If dayReq is greater than d, increase the search space by setting low = mid + 1, as a higher capacity is needed.
+Return the Answer:
+
+The binary search continues until low is greater than high, at which point ans holds the minimum capacity that meets the requirement.
+Complexity Analysis
+Time Complexity: 
+𝑂(𝑁⋅log(sum of weights−max weight)) 
+O(N⋅log(sum of weights−max weight)), where N is the length of the weights[] array.
+Space Complexity: 
+𝑂(1)
+O(1), as no additional space is used aside from a few variables.
+
+  code : 
+   public static int PossibleCap(int w[] ,int cap){
+        int day = 1 , load = 0 ;
+        for(int i = 0 ; i < w.length ;i++){
+            if(load + w[i] > cap){ // checking if capacity exceeding on particular cap so update the day and load
+                day = day + 1 ;
+                load = w[i];
+            }else load = load + w[i] ; // adding and update the load capacity 
+        }
+        return day ;
+    }
+    public static int leastWeightCapacity(int[] weights, int d) {
+       
+        int n = weights.length  ;
+        int low = Integer.MIN_VALUE , high = 0 ;
+        for(int i = 0 ; i < n ;i++){
+            low = Math.max(low,weights[i]); // finding 1st weight cap at minimum so that every thing able to loaded 
+            high = high + weights[i]; // finding last bound that is sum of arra
+        }
+        // low has max value and high has summation ,
+   // Optimal Solution : where we are triming the capacity between low and high using binary search 
+          int ans = 0 ;
+          while(low <= high){
+              int mid = (low + high)/2 ;
+              int dayReq = PossibleCap(weights,mid) ; // mid is showing capacity
+              if(dayReq <= d){
+                  ans = mid ;
+                  high = mid - 1 ; // triming here reight if we get , we need least capacity with in days given
+              }else low = mid + 1 ;
+          }
+         return ans ; // we can also return here Low , bcs at the end of the while loop low always pointing the least possible capacity in binary search because of opposite polarity .
+
+*************/
+
+  
