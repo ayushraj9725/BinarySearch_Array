@@ -1,0 +1,97 @@
+/******
+Problem Link  :  Painter's Partition Problem   :  https://www.naukri.com/code360/problems/painter-s-partition-problem_1089557?leftPanelTabValue=PROBLEM   CodeNinja : Aksed in Interview Company : Google , OYO , Paypal etc ;
+
+Problem Statement : Given an array/list of length ‘n’, where the array/list represents the boards and each element of the given array/list represents the length of each board.
+Some ‘k’ numbers of painters are available to paint these boards. Consider that each unit of a board takes 1 unit of time to paint.
+
+You are supposed to return the area of the minimum time to get this job done of painting all the ‘n’ boards under a constraint that any painter will only paint the continuous sections of boards.
+
+Example :
+Input: arr = [2, 1, 5, 6, 2, 3], k = 2
+Output: 11
+
+Explanation:
+First painter can paint boards 1 to 3 in 8 units of time and the second painter can paint boards 4-6 in 11 units of time. 
+Thus both painters will paint all the boards in max(8,11) = 11 units of time. It can be shown that all the boards can't be painted in less than 11 units of time.
+
+We solved it using Linear Search app and Binary Search Approach , using defind the range of possiblility , above problem explaination is only for the understanding purpose do not go for straigth using examole 
+at revision time try to understand problem and find apply logic do dry run again and agaian to take varity of Cases . this is extremely hard question on binart search !
+
+********/
+Brute Force linear search 
+ public static int countPages(ArrayList<Integer> arr, int n , int pages){
+        int countBook = 1 , pageStudent = 0 ;
+        for(int i = 0 ; i < n ;i++){
+            if(pageStudent + arr.get(i) <= pages){
+                pageStudent += arr.get(i) ; 
+            }
+            else{
+                countBook++;
+                pageStudent = arr.get(i);
+            }
+        }
+        return countBook ;
+    }
+ int low = Collections.max(arr) , high = 0 ; // lowest minimum bound is the max of arr
+         for(int i = 0 ; i < n ;i++){
+             high += arr.get(i); // we get the sum here and it is last possible bound 
+         }
+         // apply linear Search
+         for(int pages = low ; pages <= high ;pages++){
+             int cp = countPages(arr,n,pages);
+             if(cp == m){
+                 return pages;
+             }
+         }
+         return -1 ;
+}
+ public static int findLargestMinDistance(ArrayList<Integer> boards, int k)
+    {
+         int n = boards.size();
+         return findPages(boards,n,k) ;
+    }
+********/
+OPTIMAL APPROACH TO SOLVE THIS PROBLEM : BINARY SEARCH 
+import java.util.ArrayList;
+import java.util.Collections;
+public class Solution 
+{
+     public static int countPages(ArrayList<Integer> arr, int n , int pages){
+        int countBook = 1 , pageStudent = 0 ;
+        for(int i = 0 ; i < n ;i++){
+            if(pageStudent + arr.get(i) <= pages){
+                pageStudent += arr.get(i); 
+            }
+            else{
+                countBook++;
+                pageStudent = arr.get(i);
+            }
+        }
+        return countBook ;
+    }
+    public static int findPages(ArrayList<Integer> arr, int n, int m) {
+       // OPTIMAL SOLUTION : BINARY SEARCH
+        if(n < m) return -1 ; // this is the impossible case for distribution of book to student
+        int low = Collections.max(arr) , high = 0 ; // lowest minimum bound is the max of arr
+         for(int i = 0 ; i < n ;i++){
+             high += arr.get(i); // we get the sum here and it is last possible bound
+         }
+          int ans = 0 ;
+         while(low <= high){
+             int mid = low + (high - low) / 2;
+             int cp = countPages(arr,n,mid); // mid is pages
+             if(cp <= m){
+                 ans = mid ;
+                 high = mid - 1 ; // we are looking for min but that max so eliminate left half after knowing 
+
+             } else low = mid + 1 ; // triming the right half that means answer not found yet 
+         }
+          return ans ; // we can return here right also due to opposite polarity of possiblity of yes or not at the end of the bianry search while loop
+    }
+    public static int findLargestMinDistance(ArrayList<Integer> boards, int k)
+    {
+         int n = boards.size();
+         return findPages(boards,n,k) ;
+    }
+}
+*********/
