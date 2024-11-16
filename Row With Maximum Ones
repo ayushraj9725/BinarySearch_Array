@@ -1,0 +1,65 @@
+/******
+problem name  : 2643. Row With Maximum Ones
+problem link : Leetcode https://leetcode.com/problems/row-with-maximum-ones/ : 
+
+Problem Dsecription : 
+Given a m x n binary matrix mat, find the 0-indexed position of the row that contains the maximum count of ones, and the number of ones in that row.
+
+In case there are multiple rows that have the maximum count of ones, the row with the smallest row number should be selected.
+
+Return an array containing the index of the row, and the number of ones in it.
+
+ 
+
+Example 1:
+
+Input: mat = [[0,1],[1,0]]
+Output: [0,1]
+Explanation: Both rows have the same number of 1's. So we return the index of the smaller row, 0, and the maximum count of ones (1). So, the answer is [0,1]. 
+Example 2:
+
+Input: mat = [[0,0,0],[0,1,1]]
+Output: [1,2]
+Explanation: The row indexed 1 has the maximum count of ones (2). So we return its index, 1, and the count. So, the answer is [1,2].
+Example 3:
+
+Input: mat = [[0,0],[1,1],[0,0]]
+Output: [1,2]
+Explanation: The row indexed 1 has the maximum count of ones (2). So the answer is [1,2].
+ 
+
+Constraints:
+
+m == mat.length 
+n == mat[i].length 
+1 <= m, n <= 100 
+mat[i][j] is either 0 or 1. 
+********/
+code and algorithm : 
+class Solution {
+    // this question can not solved by binary search because it is not sorted .
+    public int[] rowAndMaximumOnes(int[][] mat) {
+
+
+       // Brute Force Solution . 
+        int ind = -1 , max = -1 ; // it hold the max time appeares ans ind hold which row 
+        for(int i = 0 ;i < mat.length ;i++){
+            int countRow = 0 ;
+            for(int j = 0; j < mat[0].length ;j++){
+                countRow += mat[i][j] ; // we are counting using 0,1 addition being in matrix
+            }
+            // here we are update the max if countRow goes greater than max and hold that particular index in ind variable 
+            if(countRow > max){
+                max = countRow ;
+                ind = i ; // stored there the row which have maximum one's
+            }
+        }
+        return new int[]{ind , max} ; // returning here the row with maxi apprears one's
+       // time complexity : O(N * M) using nested loop  ;
+       
+    }
+}
+
+
+
+/********
