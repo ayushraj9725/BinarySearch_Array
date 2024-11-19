@@ -1,0 +1,116 @@
+problem name : Search in 2D array part 2  leetcoe 240 : https://leetcode.com/problems/search-a-2d-matrix-ii/submissions/1457559230/ 
+problme link : code ninja  : https://www.naukri.com/code360/problems/search-in-a-2d-matrix-ii_1089637?leftPanelTabValue=SUBMISSION     ,  asked in interview company : Flipkart , amazone , salesforce
+
+problem Statement : 
+You are given a 2-D matrix of dimensions 'N' x 'M', each row of the matrix is sorted in non-decreasing order, and each column is sorted in non-decreasing order.
+You are also given an integer ‘X’. You are supposed to find whether 'X' is present in the given matrix.
+
+exapmle : 
+Input: matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
+Output: true
+
+Input: matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20
+Output: false
+
+/*********/
+Code leetcode : 
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        // Brute force solution  : linear search solution 
+        // better solution : Binary search for every rows , we write similar in part 1 search 2d
+        // optimal solution we are going to write  .
+        // we can check the pattern of sorted part any how and then the my low and high will being setup for the finding the element 
+        // we can start with right top corner and bottem left corner start searching , starting point is this 
+        int n = matrix.length ; // row 
+        int m = matrix[0].length ; // colm length
+        int low = 0 , high = m - 1 ; // low 0 means in 1st row and last colm
+        while(low < n && high >= 0){
+            if(matrix[low][high] == target) return true ;
+            else if(matrix[low][high] < target) low++ ; // if we see the target is lower then we move one step ahead with row 
+            else high-- ;  // otherwise decrease , back ward move 
+        }
+         return false ; // if not found the return false
+         //time taken  : O(N + M) ans space O(1)
+    }
+}
+
+*********/
+
+Code of codeninja :
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution 
+{
+   /*  public static boolean binarySearch(ArrayList<Integer> nums, int target) {
+        int n = nums.size(); //size of the array
+        int low = 0, high = n - 1;
+
+        // Perform the steps:
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (nums.get(mid) == target) return true;
+            else if (target > nums.get(mid)) low = mid + 1;
+            else high = mid - 1;
+        }
+        return false;
+    }
+    public static boolean findInMatrix(int x, ArrayList<ArrayList<Integer>> arr)
+    {
+       // Better Solution : Binary Search applied in row or colm 
+        int n = arr.size();
+        int m = arr.get(0).size();
+
+         for (int i = 0; i < n; i++) {
+            boolean flag = binarySearch(arr.get(i), x);
+            if (flag == true) return true;
+        }
+        return false;
+
+      // time is taking  : O(n * log2m) time 
+
+   */
+
+
+
+      /*  // Brute force Solution : Linear Search 
+          int n = arr.size(), m = arr.get(0).size();
+
+        // traverse the matrix:
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (arr.get(i).get(j) == x)
+                    return true;
+            }
+        }
+        return false;
+
+        // time comp : O(N * M) ;
+
+        */
+
+
+
+
+        // Optimal Solution 
+        public static boolean findInMatrix(int x, ArrayList<ArrayList<Integer>> arr)
+    {
+             int n = arr.size();
+             int m = arr.get(0).size();
+             int low = 0 , high = m - 1 ;
+             while(low < n && high >= 0){
+                 if(arr.get(low).get(high) == x ) return true ;
+                 else if(arr.get(low).get(high) < x) low++;
+                 else high-- ;
+             }
+
+             return false ;
+
+   // time complexity : O(n + M) abd space O(1) 
+
+   // we can also start with the low left corner 
+
+
+    }
+}
