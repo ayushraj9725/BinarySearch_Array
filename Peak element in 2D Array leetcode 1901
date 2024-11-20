@@ -1,0 +1,166 @@
+/******
+Problem link : Peak element in 2D Array leetcode 1901    :  https://leetcode.com/problems/find-a-peak-element-ii/ leetcode        1901
+problem link : https://www.naukri.com/code360/problems/find-peak-element_7449073?leftPanelTabValue=SUBMISSION  
+
+Problem Statement : 
+A peak element in a 2D grid is an element that is strictly greater than all of its adjacent neighbors to the left, right, top, and bottom.
+Given a 0-indexed m x n matrix mat where no two adjacent cells are equal, find any peak element mat[i][j] and return the length 2 array [i,j].
+You may assume that the entire matrix is surrounded by an outer perimeter with the value -1 in each cell.
+You must write an algorithm that runs in O(m log(n)) or O(n log(m)) time.
+
+Input: mat = [[1,4],[3,2]]
+Output: [0,1]
+Explanation: Both 3 and 4 are peak elements so [1,0] and [0,1] are both acceptable answers.
+
+Input: mat = [[10,20,15],[21,30,14],[7,16,32]]
+Output: [1,1]
+Explanation: Both 30 and 32 are peak elements so [1,1] and [2,2] are both acceptable answers.
+
+*******/
+Code From scretch 
+class Solution {
+    public static int findMaxIndex(int[][] mat ,int n, int m , int col){
+        int maxValue = -1 ;
+        int index = -1 ;
+        for(int i = 0 ; i < n ;i++){
+             if(mat[i][col] > maxValue){
+                maxValue = mat[i][col] ;
+                index = i ;
+             }
+        }
+        return index ;
+    }
+    public int[] findPeakGrid(int[][] mat) {
+       // Optimal Solution : using Binary search 
+       int n = mat.length ;
+       int m = mat[0].length ;
+       int low = 0 , high = m -1 ;
+       while(low <= high){
+           int mid = (low + high) / 2 ;
+           int maxRowIndex = findMaxIndex(mat,n,m,mid); 
+           int left = mid - 1 >= 0 ? mat[maxRowIndex][mid-1] : -1 ;
+           int right = mid + 1 < m ? mat[maxRowIndex][mid+1] : -1 ;
+           if(mat[maxRowIndex][mid] > left && mat[maxRowIndex][mid] > right ){
+              return new int[]{maxRowIndex,mid} ;
+           }
+           else if(mat[maxRowIndex][mid] < left) high = mid - 1 ;
+           else low = mid + 1 ;
+       }
+        return new int[]{-1,-1} ;
+
+
+
+
+       // Optimized the brute force solution 
+       // find the max from the entire matrix that are going to be the peak possible 
+       // it is simple in as find the largest element in matrix .
+   /* 
+    // Extreme brute force : search one by one every element and check 
+    int n = mat.length;        // Number of rows
+    int m = mat[0].length;     // Number of columns
+
+    // Traverse through every element in the matrix
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            // Flag to check if the current element is a peak
+            boolean isPeak = true;
+            // Check the top neighbor
+            if (i > 0 && mat[i][j] <= mat[i - 1][j]) {
+                isPeak = false;
+            }
+            // Check the bottom neighbor
+            if (i < n - 1 && mat[i][j] <= mat[i + 1][j]) {
+                isPeak = false;
+            }
+            // Check the left neighbor
+            if (j > 0 && mat[i][j] <= mat[i][j - 1]) {
+                isPeak = false;
+            }
+            // Check the right neighbor
+            if (j < m - 1 && mat[i][j] <= mat[i][j + 1]) {
+                isPeak = false;
+            }
+
+            // If it's a peak, return its position
+            if (isPeak) {
+                return new int[]{i, j};
+            }
+        }
+    }  
+         return new int[]{-1,-1} ;
+
+         */
+    /*
+     Iterate through all elements:
+
+You iterate over each row (n) and column (m), so the total number of elements is n * m.
+Check all 4 neighbors for each element:
+
+For each element, you check:
+Left neighbor (if it exists).
+Right neighbor (if it exists).
+Top neighbor (if it exists).
+Bottom neighbor (if it exists).
+In the worst case, all 4 neighbors need to be checked for each element, leading to an additional factor of 4
+
+
+    */
+
+
+
+
+
+        /* int n = mat.length ;
+         int m = mat[0].length ;
+         for(int i = 0 ; i < n ; i++){
+            for(int j = 0 ; j < m ;j++){
+                if(mat[i][j] > mat[i][j-1] && mat[i][j] > mat[i][j+1]
+                 && mat[i][j] > mat[i-1][j] && mat[i][j] > mat[i+1][j]){
+                    return new int[]{i,j} ;
+                 }
+            }
+         }
+         return new int[]{-1,-1} ;
+  // this is going to give the runn time error 
+
+         */
+    }
+}
+
+******/
+public class Solution {
+     public static int findMaxIndex(int[][] mat ,int n, int m , int col){
+        int maxValue = -1 ;
+        int index = -1 ;
+        for(int i = 0 ; i < n ;i++){
+             if(mat[i][col] > maxValue){
+                maxValue = mat[i][col] ;
+                index = i ;
+             }
+        }
+        return index ;
+    }
+    public static int[] findPeakGrid(int [][]mat){
+         // Optimal Solution : using Binary search 
+       int n = mat.length ;
+       int m = mat[0].length ;
+       int low = 0 , high = m -1 ;
+       while(low <= high){
+           int mid = (low + high) / 2 ;
+           int maxRowIndex = findMaxIndex(mat,n,m,mid); 
+           int left = mid - 1 >= 0 ? mat[maxRowIndex][mid-1] : -1 ;
+           int right = mid + 1 < m ? mat[maxRowIndex][mid+1] : -1 ;
+           if(mat[maxRowIndex][mid] > left && mat[maxRowIndex][mid] > right ){
+              return new int[]{maxRowIndex,mid} ;
+           }
+           else if(mat[maxRowIndex][mid] < left) high = mid - 1 ;
+           else low = mid + 1 ;
+       }
+        return new int[]{-1,-1} ;
+        // time complexity : O(log2m) * n binary search applied for every colm .
+
+    }
+}
+
+
+*********/
