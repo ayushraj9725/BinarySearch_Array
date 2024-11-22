@@ -65,7 +65,7 @@ Return the first feasible capacity found, as it represents the smallest capacity
 
 ***********/ 
 Optimal Solution : 
-Identify the Capacity Bounds:
+Identify the Capacity Bounds : how i identify the capacity of bounds 
 
 1. The minimum possible capacity (low) should be at least the heaviest weight in the weights[] array, as this ensures the transporter can handle every individual weight.
 2. The maximum possible capacity (high) is the sum of all weights, as this would mean carrying all weights in one day.
