@@ -1,0 +1,130 @@
+Problem : Minimize maximum distance btw has gas station ! Link : https://www.naukri.com/code360/problems/minimise-max-distance_7541449?leftPanelTabValue=SUBMISSION
+     gfg : https://www.geeksforgeeks.org/problems/minimize-max-distance-to-gas-station/1   and    https://www.geeksforgeeks.org/minimize-the-maximum-distance-between-adjacent-points-after-adding-k-points-anywhere-in-between/ 
+
+problem statement : 
+You are given a sorted array ‘arr’ of length ‘n’, which contains positive integer positions of ‘n’ gas stations on the X-axis.
+
+
+
+You are also given an integer ‘k’.
+
+
+
+You have to place 'k' new gas stations on the X-axis.
+
+
+
+You can place them anywhere on the non-negative side of the X-axis, even on non-integer positions.
+
+
+
+Let 'dist' be the maximum value of the distance between adjacent gas stations after adding 'k' new gas stations.
+
+Find the minimum value of dist.
+
+
+
+Example:
+Input: ‘n' = 7 , ‘k’=6, ‘arr’ = {1,2,3,4,5,6,7}.
+
+Answer: 0.5
+
+Explanation:
+We can place 6 gas stations at 1.5, 2.5, 3.5, 4.5, 5.5, 6.5. 
+
+Thus the value of 'dist' will be 0.5. It can be shown that we can't get a lower value of 'dist' by placing 6 gas stations.
+
+
+Note:
+You will only see 1 or 0 in the output where:
+  1 represents your answer is correct.
+  0 represents your answer is wrong. 
+Answers within 10^-6 of the actual answer will be accepted.
+Detailed explanation ( Input/output format, Notes, Images )
+
+Sample Input 1:
+5 4
+1 2 3 4 5
+Expected Answer:
+0.5
+
+Output Printed On Console:
+1
+Explanation of sample output 1:
+k = 4, arr = {1,2,3,4,5} 
+One of the possible ways to place 4 gas stations is {1,1.5,2,2.5,3,3.5,4,4.5,5}
+Thus the maximum difference between adjacent gas stations is 0.5. 
+Hence, the value of ‘dist’ is 0.5. It can be shown that there is no possible way to add 4 gas stations in such a way that the value of ‘dist’ is lower than this.
+(Note: 1 will be printed in the output for the correct answer). 
+
+/*******/
+Code :
+Brute force Approach : Time complexity O(n * m) + O(n) .  and space O(n-1) for gap array 
+public class Solution {
+    public static double MinimiseMaxDistance(int []arr, int K){
+        // Brute force solution 
+        int n = arr.length ;
+        int howMany[] = new int[n-1] ; // making an gap array which will help me to find the gap and how i achive the minimization of distance while fitting given gas stations
+        for(int stations = 1 ; stations <= K ; stations++){
+            double maxSection = -1 ;
+            int maxInd = -1 ;
+            for(int i = 0 ; i < n - 1 ;i++){
+                double diff = arr[i+1] - arr[i];
+                double sectionLen = diff/(double)(howMany[i]+1) ; // the sectionLength we are finding so the we can konw how many gas station are fitting between any two gas station with same equal distance
+                if(sectionLen > maxSection){
+                    maxSection = sectionLen; 
+                    maxInd = i ; // it hold the station fixing in between two gas station , it gonna set into gap array
+                }
+            }
+            howMany[maxInd]++ ; // here increment that index where we find the max distance gap / section 
+        }
+
+        // now we are reiterating the given arr and find the maximum length using gap we find in array howMany
+        double maxDis = -1 ;
+        for(int i = 0 ; i < n-1 ;i++){
+            double diff = arr[i+1] - arr[i];
+            double sectonLen = diff/(double)(howMany[i]+1);
+            maxDis = Math.max(maxDis,sectonLen);
+        }
+        return maxDis ; // here the get maximum distance that is minimized from maximum
+    }
+}
+
+
+/******
+Better solution : Using Prority Queue and Heap data structure , after study both in depth we can solve this better solution ;
+this is c++ code here
+  
+    // better solution using Heap , prority Queue Data structure 
+     int n = arr.size(); //size of array.
+    vector<int> howMany(n - 1, 0);
+    priority_queue<pair<long double, int>> pq;
+
+    //insert the first n-1 elements into pq
+    //with respective distance values:
+    for (int i = 0; i < n - 1; i++) {
+        pq.push({arr[i + 1] - arr[i], i});
+    }
+
+    //Pick and place k gas stations:
+    for (int gasStations = 1; gasStations <= k; gasStations++) {
+        //Find the maximum section
+        //and insert the gas station:
+        auto tp = pq.top();
+        pq.pop();
+        int secInd = tp.second;
+
+        //insert the current gas station:
+        howMany[secInd]++;
+
+        long double inidiff = arr[secInd + 1] - arr[secInd];
+        long double newSecLen = inidiff / (long double)(howMany[secInd] + 1);
+        pq.push({newSecLen, secInd});
+    }
+
+    return pq.top().first;
+    
+    // time complexity : O(nlogn) + (klogn) and space complexity : O(n-1) + O(n-1)
+
+*******/
+Optimal SOlution : 
