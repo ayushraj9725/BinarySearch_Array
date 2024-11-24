@@ -1,0 +1,46 @@
+Problem : 4. Median of Two Sorted Arrays
+  links : https://leetcode.com/problems/median-of-two-sorted-arrays/description/     and   codstudio : https://www.naukri.com/code360/problems/median-of-two-sorted-arrays_985294
+
+Problem Statement : Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
+The overall run time complexity should be O(log (m+n)).
+
+Example 1:
+Input: nums1 = [1,3], nums2 = [2]
+Output: 2.00000
+Explanation: merged array = [1,2,3] and median is 2.
+
+Example 2:
+Input: nums1 = [1,2], nums2 = [3,4]
+Output: 2.50000
+Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
+
+*********/
+code Brute Force : using temp ary/list and then check this will take extra space :
+import java.util.List;
+import java.util.ArrayList ;
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        List<Integer> tmp = new ArrayList<>();
+        int n1 = nums1.length , n2 = nums2.length ;
+        int i = 0 , j = 0 ;
+        while(i < n1 && j < n2){
+            if(nums1[i] < nums2[j]) tmp.add(nums1[i++]);
+            else tmp.add(nums2[j++]) ;
+        }
+        while(i < n1) tmp.add(nums1[i++]);
+        while(j < n2) tmp.add(nums2[j++]);
+
+        // next step to check the size of tmp is even or odd
+        int n = tmp.size();
+        double median = 0 ;
+        if(n % 2 == 1) median = tmp.get(n/2) ;
+        else {
+            median = (double)((tmp.get(n/2)) + (tmp.get((n/2) - 1))) / 2 ;
+        }
+
+        return median ;  // time complexity  : O(N1 + N2) and space is O(N1 + N2) same 
+    }
+}
+
+/*********/
+
