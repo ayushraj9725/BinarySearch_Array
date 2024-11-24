@@ -43,4 +43,78 @@ class Solution {
 }
 
 /*********/
+Better Approach : 
+steps :
+1. Identify Middle Elements:
+Calculate the indices of the middle elements (mid1 and mid2) based on the total length of the combined arrays.
+If the total length is odd, the median is simply the element at mid2.
+If the total length is even, the median is the average of elements at mid1 and mid2.
+
+2. Merging Process:
+Use two pointers (i for a and j for b) to merge the arrays, keeping track of the current element count (count).
+When the count reaches mid1 or mid2, store the corresponding values (num1 and num2).
+
+3. Early Termination:
+The merging stops as soon as the two middle elements are found, avoiding unnecessary work.
+
+4.Final Calculation:
+If the total length is odd, return the element at mid2.
+If even, return the average of the elements at mid1 and mid2.
+Time Complexity:
+The time complexity is O(n1+n2), where 𝑛1 and 𝑛2 are the lengths of the input arrays, because the algorithm only processes each element once until the two middle elements are found.
+
+This approach is efficient and avoids merging the entire array, making it suitable for large input arrays.
+
+code :
+public class Solution {
+    public static double median(int[] a, int[] b) {
+    	int i = 0 , j = 0 ;
+        int n1 = a.length , n2 = b.length ;
+        int n = (n1 + n2) ;
+        int ind2 = n/2 ;
+        int ind1 = (n-1)/2 ; // this is both actually what we need for that two elemt
+        int cnt = 0 ;
+        double median = 0 ;
+        int indele1 = -1 , indele2 = -1 ; // this is that two element we are looking for 
+        while(i < n1 && j < n2){
+            if(a[i] < b[j]){
+                if(cnt == ind1) indele1 = a[i];
+                if(cnt == ind2) indele2 = a[i];
+                cnt++;
+                i++ ;
+            }
+            else{
+                if(cnt == ind1) indele1 = b[j];
+                if(cnt == ind2) indele2 = b[j];
+                cnt++;
+                j++ ;
+            }
+          if(cnt > ind2) break ; // this is breaking point where we get both number of arr what we required 
+        }
+        while(i < n1){
+                if(cnt == ind1) indele1 = a[i];
+                if(cnt == ind2) indele2 = a[i];
+                cnt++;
+                i++ ;
+                 if(cnt > ind2) break ;
+        }
+        while(j < n2){
+                if(cnt == ind1) indele1 = b[j];
+                if(cnt == ind2) indele2 = b[j];
+                cnt++;
+                j++ ;
+                 if(cnt > ind2) break ;
+        }
+        if(n % 2 == 1) median = indele2 ; //if size is odd then n/2 ind elemt is our answer 
+        else{
+            median = (double)((double)(indele1 + indele2)/2.0) ;
+        }
+
+        return median ; // time complexity : O(N1 + N2) in worth case , if we want to more optimized then we can do logic where we find both element then we will stop 
+    }
+}
+
+/*********/
+
+Optimal Solution : Binary Search Approach 
 
