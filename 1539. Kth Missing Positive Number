@@ -2,7 +2,7 @@
 Problem : 1539. Kth Missing Positive Number      and Problem link : https://leetcode.com/problems/kth-missing-positive-number/ leetcoe  
                                                                   : https://www.naukri.com/code360/problems/kth-missing-element_893215?leftPanelTabValue=SUBMISSION   CodeNinja 
 Problem Statement : 
-You are given a strictly increasing array 'vec' and a positive integer 'k'.
+You are given a strictly increasing array 'vec' and a positive integer 'k'.    /// s 
 Find the 'kth' positive integer missing from 'vec'.
 
 Example :
