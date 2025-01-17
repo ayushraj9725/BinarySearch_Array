@@ -5,6 +5,7 @@ Problem Statement : In the universe Earth C-137, Rick discovered a special form 
 
 Rick stated that magnetic force between two different balls at positions x and y is |x - y|.
 
+
 Given the integer array position and the integer m. Return the required force
 
 Input: position = [1,2,3,4,7], m = 3
